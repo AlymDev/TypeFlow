@@ -24,4 +24,4 @@ For each typed character:
 - Count it as correct when the characters match.
 - Count it as incorrect when they do not match.
 - Advance `position` after each character.
-- The test finishes when the target text is complete or the time limit expires.
+- The test finishes when the target text is complete, the time limit expires, or the selected word count is reached.

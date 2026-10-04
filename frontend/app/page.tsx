@@ -196,141 +196,189 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-100 p-6">
-      <div className="w-full max-w-5xl rounded-2xl bg-white p-8 shadow-lg">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex rounded-full bg-zinc-100 p-1">
-            <button
-              type="button"
-              onClick={() => handleModeChange("time")}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                mode === "time" ? "bg-zinc-900 text-white" : "text-zinc-700"
-              }`}
-            >
-              Time mode
-            </button>
-            <button
-              type="button"
-              onClick={() => handleModeChange("words")}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                mode === "words" ? "bg-zinc-900 text-white" : "text-zinc-700"
-              }`}
-            >
-              Words mode
-            </button>
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.15),_transparent_20%),linear-gradient(180deg,_#020617_0%,_#0f172a_100%)] px-4 py-8 text-slate-100">
+      <div className="mx-auto max-w-6xl">
+        <header className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-900/75 p-5 shadow-2xl shadow-slate-950/30 backdrop-blur-sm">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-cyan-400">TypeFlow</p>
+            <h1 className="mt-2 text-2xl font-semibold text-white">Typing Practice</h1>
           </div>
 
-          {mode === "time" ? (
-            <div className="flex gap-2">
-              {TIME_OPTIONS.map((seconds) => (
-                <button
-                  key={seconds}
-                  type="button"
-                  onClick={() => handleTimeSelect(seconds)}
-                  className={`rounded-full px-3 py-1 text-sm font-medium transition ${
-                    selectedTime === seconds ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-                  }`}
-                >
-                  {seconds}s
-                </button>
-              ))}
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              {WORD_OPTIONS.map((words) => (
-                <button
-                  key={words}
-                  type="button"
-                  onClick={() => handleWordsSelect(words)}
-                  className={`rounded-full px-3 py-1 text-sm font-medium transition ${
-                    selectedWords === words ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-                  }`}
-                >
-                  {words}w
-                </button>
-              ))}
-            </div>
-          )}
-
-          {mode === "time" && (
-            <div className="rounded-full bg-zinc-100 px-3 py-1 text-sm font-medium text-zinc-700">
-              Time left: {timeLeft}s
-            </div>
-          )}
-        </div>
-
-        <div
-          ref={inputRef}
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          className="outline-none"
-        >
-          <p className="mb-4 text-sm uppercase tracking-[0.2em] text-zinc-500">
-            {statusLabel}
-          </p>
-
-          <div className="rounded-xl bg-zinc-50 p-6 leading-relaxed">
-            {renderedCharacters}
+          <div className="rounded-full border border-cyan-500/40 bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-300">
+            {mode === "time" ? `${timeLeft}s remaining` : `${selectedWords} words`}
           </div>
+        </header>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-xl bg-zinc-100 p-3">
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">WPM</div>
-              <div className="mt-1 text-2xl font-semibold">{wpm.toFixed(1)}</div>
-            </div>
-            <div className="rounded-xl bg-zinc-100 p-3">
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Accuracy</div>
-              <div className="mt-1 text-2xl font-semibold">{accuracy.toFixed(1)}%</div>
-            </div>
-            <div className="rounded-xl bg-zinc-100 p-3">
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Errors</div>
-              <div className="mt-1 text-2xl font-semibold">{incorrectCharacters}</div>
-            </div>
-          </div>
-
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <p className="text-sm text-zinc-600">
-              Correct characters: {correctCharacters} / {targetText.length}
+        <section className="mb-6 grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl shadow-slate-950/30">
+            <p className="text-xs font-semibold uppercase tracking-[0.34em] text-cyan-400">Build speed and focus</p>
+            <h2 className="mt-4 max-w-xl text-3xl font-bold tracking-tight text-white md:text-5xl">
+              Train your hands. Sharpen your rhythm.
+            </h2>
+            <p className="mt-4 max-w-xl text-base text-slate-300 md:text-lg">
+              Practice with focused time challenges and word goals designed to help you type cleaner, faster, and with more confidence.
             </p>
-            <button
-              type="button"
-              onClick={resetTest}
-              className="rounded-full border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100"
-            >
-              Restart
-            </button>
-          </div>
 
-          {isFinished && (
-            <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <h2 className="text-lg font-semibold text-zinc-900">Test complete</h2>
-                <button
-                  type="button"
-                  onClick={resetTest}
-                  className="rounded-full bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-zinc-700"
-                >
-                  Try again
-                </button>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <div className="rounded-full border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-sm font-medium text-cyan-300">
+                {mode === "time" ? `${selectedTime}s challenge` : `${selectedWords}-word sprint`}
               </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                <div className="rounded-xl bg-white p-3">
-                  <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">WPM</div>
-                  <div className="mt-1 text-2xl font-semibold">{wpm.toFixed(1)}</div>
-                </div>
-                <div className="rounded-xl bg-white p-3">
-                  <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Accuracy</div>
-                  <div className="mt-1 text-2xl font-semibold">{accuracy.toFixed(1)}%</div>
-                </div>
-                <div className="rounded-xl bg-white p-3">
-                  <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Errors</div>
-                  <div className="mt-1 text-2xl font-semibold">{incorrectCharacters}</div>
-                </div>
+              <div className="rounded-full border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-sm font-medium text-slate-300">
+                keyboard focus
               </div>
             </div>
-          )}
-        </div>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-2xl shadow-slate-950/30">
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Quick stats</p>
+            <div className="mt-5 space-y-4">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Current WPM</div>
+                <div className="mt-2 text-3xl font-semibold text-white">{wpm.toFixed(1)}</div>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Accuracy</div>
+                <div className="mt-2 text-3xl font-semibold text-white">{accuracy.toFixed(1)}%</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl shadow-slate-950/40">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex rounded-full bg-slate-800 p-1">
+              <button
+                type="button"
+                onClick={() => handleModeChange("time")}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                  mode === "time" ? "bg-cyan-500 text-slate-950" : "text-slate-300 hover:text-white"
+                }`}
+              >
+                Time mode
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModeChange("words")}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                  mode === "words" ? "bg-cyan-500 text-slate-950" : "text-slate-300 hover:text-white"
+                }`}
+              >
+                Words mode
+              </button>
+            </div>
+
+            {mode === "time" ? (
+              <div className="flex flex-wrap gap-2">
+                {TIME_OPTIONS.map((seconds) => (
+                  <button
+                    key={seconds}
+                    type="button"
+                    onClick={() => handleTimeSelect(seconds)}
+                    className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                      selectedTime === seconds
+                        ? "bg-white text-slate-950"
+                        : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+                    }`}
+                  >
+                    {seconds}s
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {WORD_OPTIONS.map((words) => (
+                  <button
+                    key={words}
+                    type="button"
+                    onClick={() => handleWordsSelect(words)}
+                    className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                      selectedWords === words
+                        ? "bg-white text-slate-950"
+                        : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+                    }`}
+                  >
+                    {words}w
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div
+            ref={inputRef}
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            className="outline-none"
+          >
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                {statusLabel}
+              </p>
+
+              <button
+                type="button"
+                onClick={resetTest}
+                className="rounded-full border border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+              >
+                Restart
+              </button>
+            </div>
+
+            <div className="rounded-2xl border border-slate-700 bg-slate-950/80 p-6 leading-relaxed shadow-inner shadow-slate-950/80">
+              {renderedCharacters}
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-800 bg-slate-800/80 p-4">
+                <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">WPM</div>
+                <div className="mt-2 text-3xl font-semibold text-white">{wpm.toFixed(1)}</div>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-800/80 p-4">
+                <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Accuracy</div>
+                <div className="mt-2 text-3xl font-semibold text-white">{accuracy.toFixed(1)}%</div>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-800/80 p-4">
+                <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Errors</div>
+                <div className="mt-2 text-3xl font-semibold text-white">{incorrectCharacters}</div>
+              </div>
+            </div>
+
+            <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-800/50 px-4 py-3 text-sm text-slate-300">
+              <span>Correct characters: {correctCharacters} / {targetText.length}</span>
+              <span>{timeLeft}s left</span>
+            </div>
+
+            {isFinished && (
+              <div className="mt-6 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 p-5">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <h2 className="text-lg font-semibold text-white">Test complete</h2>
+                  <button
+                    type="button"
+                    onClick={resetTest}
+                    className="rounded-full bg-cyan-400 px-3 py-1.5 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
+                  >
+                    Try again
+                  </button>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-xl bg-slate-950/60 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">WPM</div>
+                    <div className="mt-1 text-2xl font-semibold text-white">{wpm.toFixed(1)}</div>
+                  </div>
+                  <div className="rounded-xl bg-slate-950/60 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Accuracy</div>
+                    <div className="mt-1 text-2xl font-semibold text-white">{accuracy.toFixed(1)}%</div>
+                  </div>
+                  <div className="rounded-xl bg-slate-950/60 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Errors</div>
+                    <div className="mt-1 text-2xl font-semibold text-white">{incorrectCharacters}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </main>
   );
